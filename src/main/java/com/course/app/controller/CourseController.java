@@ -35,4 +35,16 @@ public class CourseController {
     public ResponseEntity<Course> addCourse(@RequestBody Course course) {
         return ResponseEntity.ok(courseService.createCourse(course));
     }
+
+    @PutMapping("/updateCourse/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course updatedCourse) {
+        return ResponseEntity.ok(courseService.updateCourse(id, updatedCourse));
+    }
+
+    @DeleteMapping("/deleteCourse/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+        courseService.deleteCourse(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -27,4 +27,19 @@ public class CourseService {
     public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
+
+    public Course updateCourse(Long id, Course updated) {
+        Course existing = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        existing.setTitle(updated.getTitle());
+        existing.setDescription(updated.getDescription());
+        existing.setInstructor(updated.getInstructor());
+        existing.setLevel(updated.getLevel());
+        existing.setDurationWeeks(updated.getDurationWeeks());
+        return courseRepository.save(existing);
+    }
+
+    public void deleteCourse(Long id) {
+        courseRepository.deleteById(id);
+    }
 }

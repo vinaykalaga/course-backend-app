@@ -17,4 +17,8 @@ public class Course {
 
     private String title;
     private String description;
+
+    private String instructor;
+    private String level;        // e.g., Beginner, Intermediate, Advanced
+    private int durationWeeks;   // e.g., 4 (weeks)
 }
