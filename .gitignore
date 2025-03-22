@@ -1,0 +1,5 @@
+# ignore unnecessary files
+target/
+.idea/
+.env
+*.log
