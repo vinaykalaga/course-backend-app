@@ -25,26 +25,6 @@
             this.jwtFilter = jwtFilter;
         }
 
-        /*@Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http
-                    .cors()
-                    .and()
-                    .csrf().disable()
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                            // 💡 Public access to GET
-                            .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
-
-                            // 🔐 POST requires USER role
-                            .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("USER")
-                            .anyRequest().authenticated()
-                    )
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-            return http.build();
-        }*/
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,10 +35,12 @@
                     .and()
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                            //.requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
-                            //.requestMatchers(HttpMethod.GET, "/courses/getCourse/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/courses/getCourse", "/courses/getCourse/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("USER")
+                            .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("INSTRUCTOR")
+                            .requestMatchers(HttpMethod.PUT, "/courses/**").hasRole("INSTRUCTOR")
+                            .requestMatchers(HttpMethod.DELETE, "/courses/**").hasRole("INSTRUCTOR")
+                            /*.requestMatchers(HttpMethod.GET, "/courses/getCourse", "/courses/getCourse/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("USER")*/
                             .anyRequest().authenticated()
                     )
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

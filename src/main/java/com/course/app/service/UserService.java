@@ -25,19 +25,20 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(User user) {
-        Role userRole = roleRepository.findByAuthority("ROLE_USER");
+    public User saveUser(User user, String roleName) {
+        Role role = roleRepository.findByAuthority(roleName);
 
-        if (userRole == null) {
-            userRole = new Role();
-            userRole.setAuthority("ROLE_USER");
-            roleRepository.save(userRole);
+        if (role == null) {
+            role = new Role();
+            role.setAuthority(roleName);
+            roleRepository.save(role);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(userRole));
+        user.setRoles(Collections.singletonList(role));
         return userRepository.save(user);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
