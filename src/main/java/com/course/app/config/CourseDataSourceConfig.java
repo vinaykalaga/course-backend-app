@@ -40,7 +40,10 @@ public class CourseDataSourceConfig {
 
         return builder
                 .dataSource(courseDataSource())
-                .packages("com.course.app.model.course")
+                .packages(
+                        "com.course.app.model.course", // ✅ your course entities
+                        "com.course.app.model.auth"    // ✅ include User for enrollment
+                )
                 .persistenceUnit("course")
                 .properties(jpaProperties)
                 .build();
