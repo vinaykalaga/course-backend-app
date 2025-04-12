@@ -25,4 +25,7 @@ public class Enrollment {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @Column(name = "certificate_generated")
+    private boolean certificateGenerated;
 }

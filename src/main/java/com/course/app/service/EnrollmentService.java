@@ -89,6 +89,7 @@ public class EnrollmentService {
     }
 
 
-
-
+    public Enrollment findByCourseIdAndUsername(Long id, String name) {
+        return enrollmentRepo.findByCourseIdAndUsername(id,name);
+    }
 }
