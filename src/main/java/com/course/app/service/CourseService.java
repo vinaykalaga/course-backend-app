@@ -2,7 +2,9 @@ package com.course.app.service;
 
 import com.course.app.model.course.Course;
 import com.course.app.repository.course.CourseRepository;
+import com.course.app.repository.course.EnrollmentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final EnrollmentRepository enrollmentRepo;
 
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, EnrollmentRepository enrollmentRepo) {
         this.courseRepository = courseRepository;
+        this.enrollmentRepo=enrollmentRepo;
     }
 
     public List<Course> getAllCourses() {
@@ -39,7 +43,17 @@ public class CourseService {
         return courseRepository.save(existing);
     }
 
-    public void deleteCourse(Long id) {
-        courseRepository.deleteById(id);
+    //public void deleteCourse(Long id) {
+      //  courseRepository.deleteById(id);
+   // }
+
+    @Transactional
+    public void deleteCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        enrollmentRepo.deleteByCourse(course); // step 1: delete dependent enrollments
+        courseRepository.delete(course);             // step 2: delete course itself
     }
+
 }
