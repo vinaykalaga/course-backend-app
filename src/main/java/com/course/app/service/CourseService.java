@@ -1,8 +1,11 @@
 package com.course.app.service;
 
+import com.course.app.dto.PopularCourseDto;
 import com.course.app.model.course.Course;
 import com.course.app.repository.course.CourseRepository;
 import com.course.app.repository.course.EnrollmentRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +58,11 @@ public class CourseService {
         enrollmentRepo.deleteByCourse(course); // step 1: delete dependent enrollments
         courseRepository.delete(course);             // step 2: delete course itself
     }
+
+    public List<PopularCourseDto> getPopularCourses() {
+        Pageable limit = PageRequest.of(0, 5);
+        return courseRepository.findTopPopularCourses(limit);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.course.app.controller;
 
+import com.course.app.dto.PopularCourseDto;
 import com.course.app.model.course.Course;
 import com.course.app.service.CourseService;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,11 @@ public class CourseController {
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<PopularCourseDto>> getPopularCourses() {
+        return ResponseEntity.ok(courseService.getPopularCourses());
     }
 
 }
