@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -21,4 +23,8 @@ public class Course {
     private String instructor;
     private String level;        // e.g., Beginner, Intermediate, Advanced
     private int durationWeeks;   // e.g., 4 (weeks)
+    @Lob
+    @Column(columnDefinition = "TEXT") // for larger content
+    private String content; // ✅ Course material content
+
 }

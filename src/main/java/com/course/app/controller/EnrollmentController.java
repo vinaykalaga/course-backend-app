@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/courses")
@@ -30,18 +33,18 @@ public class EnrollmentController {
         return ResponseEntity.ok(result);
     }
 
-    // 🔐 GET /courses/my-courses
-    /*@GetMapping("/my-courses")
-    public ResponseEntity<List<Course>> getMyCourses(Authentication auth) {
-        String username = auth.getName(); // from JWT
-        List<Course> courses = enrollmentService.getCoursesByUsername(username);
-        return ResponseEntity.ok(courses);
-    }*/
 
-    @GetMapping("/status/{courseId}")
-    public ResponseEntity<Enrollment> getStatus(@PathVariable Long courseId, Authentication auth) {
-        String username = auth.getName();
-        return ResponseEntity.of(enrollmentService.findByUsernameAndCourse(username, courseId));
+    @GetMapping("/status/{id}")
+    public ResponseEntity<?> getCourseStatus(@PathVariable Long id, Principal principal) {
+        // Check if the user is enrolled and completed the course
+        Enrollment enrollment = enrollmentService.findByCourseIdAndUsername(id, principal.getName());
+        if (enrollment == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Object> status = new HashMap<>();
+        status.put("completed", enrollment.isCompleted());
+        return ResponseEntity.ok(status);
     }
 
     @PostMapping("/complete/{courseId}")

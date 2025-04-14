@@ -46,16 +46,19 @@
                                     .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
 
                                     // 👨‍🎓 Learner-only routes
-                                    .requestMatchers(HttpMethod.GET, "/courses/status/**").hasRole("LEARNER")
+                                    .requestMatchers(HttpMethod.GET, "/courses/status/**").hasAnyRole("LEARNER","INSTRUCTOR")
                                     .requestMatchers(HttpMethod.POST, "/courses/enroll/**").hasRole("LEARNER")
                                     .requestMatchers(HttpMethod.POST, "/courses/complete/**").hasRole("LEARNER")
                                     .requestMatchers(HttpMethod.GET, "/courses/my-courses").hasRole("LEARNER")
                                     .requestMatchers(HttpMethod.GET, "/certificate/download/**").hasRole("LEARNER")
 
                                     // 🧑‍🏫 Instructor-only actions
+                                    //.requestMatchers(HttpMethod.GET, "/courses/status/**").hasRole("INSTRUCTOR")
                                     .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("INSTRUCTOR")
                                     .requestMatchers(HttpMethod.PUT, "/courses/**").hasRole("INSTRUCTOR")
                                     .requestMatchers(HttpMethod.DELETE, "/courses/**").hasRole("INSTRUCTOR")
+                                    .requestMatchers(HttpMethod.GET, "/instructor/**").hasRole("INSTRUCTOR")
+                                    .requestMatchers(HttpMethod.GET, "/courses/instructor/**").hasRole("INSTRUCTOR")
 
                                     // 🛡️ All other requests require authentication
                                     .anyRequest().authenticated()

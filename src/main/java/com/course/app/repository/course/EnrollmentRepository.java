@@ -11,7 +11,15 @@ import java.util.Optional;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findByUsername(String username);
     Optional<Enrollment> findByUsernameAndCourse(String username, Course course);
-    //Optional<Enrollment> findByUserAndCourse(User user, Course course);
     Optional<Enrollment> findByUsernameAndCourseId(String username, Long courseId);
+    void deleteByCourse(Course course);
 
+    long countByCourse_Instructor(String instructorUsername);
+    long countByCourse_InstructorAndCompletedTrue(String instructorUsername);
+    long countByCourseId(Long courseId);
+    long countByCourseIdAndCompletedTrue(Long courseId);
+
+    Enrollment findByCourseIdAndUsername(Long id, String name);
+
+    List<Enrollment> findByCourseId(Long courseId);
 }

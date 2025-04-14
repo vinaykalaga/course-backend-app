@@ -3,6 +3,7 @@ package com.course.app.controller;
 import com.course.app.model.course.Course;
 import com.course.app.service.CourseService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +33,9 @@ public class CourseController {
 
 
     @PostMapping("/addCourse")
-    public ResponseEntity<Course> addCourse(@RequestBody Course course) {
+    public ResponseEntity<Course> addCourse(@RequestBody Course course, Authentication auth) {
+        String username = auth.getName(); // ⬅️ get logged-in instructor
+        course.setInstructor(username);   // ⬅️ must be saved to match dashboard query
         return ResponseEntity.ok(courseService.createCourse(course));
     }
 
